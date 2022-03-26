@@ -1,0 +1,38 @@
+--Lista 01 – Banco de dados: VendasED
+
+--1. Selecione todos os clientes do banco de dados VendasEd. 
+	SELECT * FROM CLIENTE
+
+--2. Selecione todos os clientes da cidade de Votorantim.
+	SELECT * FROM CLIENTE WHERE CIDADE = 'VOTORANTIM'
+
+--3. Mostre todos os clientes do sexo masculino da cidade de sorocaba.
+	SELECT * FROM CLIENTE WHERE SEXO = 'M' AND CIDADE = 'SOROCABA'
+
+--4. Mostre todos os clientes do sexo feminino que não possui e-mail cadastrado.
+	SELECT * FROM CLIENTE WHERE SEXO = 'F' AND EMAIL IS NULL
+
+--5. Mostre o nome, rg, cpf e o telefone de todos os clientes que não possui telefone cadastrado.
+	SELECT NOME, RG, CPF, TELEFONE FROM CLIENTE WHERE TELEFONE IS NULL
+
+--6. Mostre a quantidade de clientes mulheres cadastradas no sistema.
+	 SELECT 'FEMININO' AS SEXO, COUNT(*) AS QUANTIDADE FROM CLIENTE WHERE SEXO = 'F'
+	
+--7. Mostre o nome dos clientes em ordem alfabética
+	SELECT * FROM CLIENTE order by NOME
+
+--8. Mostre o nome, telefone, email e endereço de todos os clientes que moram na rua Orlando Alvagenga do sexo feminino
+	 SELECT NOME, TELEFONE, email, endereco FROM CLIENTE WHERE endereco LIKE 'RUA ORLANDO ALVAGENGA%' AND SEXO = 'F'
+
+--9. Mostre o maior cod_cliente cadastrado
+	SELECT MAX(COD_CLIENTE) FROM CLIENTE 
+
+--10. Mostre o menor cod_cliente cadastrado
+	SELECT MIN(COD_CLIENTE) FROM CLIENTE 
+
+--11. Mostre o nome da cidade e a quantidade de clientes de cada cidade cadastrada
+	select cidade, count(*) as quantidade from Cliente group by cidade
+
+
+--12. Mostre a quantidade de clientes por cidade, sexo e estado, desconsiderando valores nulos com o nome da cidade em ordem alfabética
+	select cidade, sexo, estado, count(*) as quantidade from Cliente group by cidade, sexo, estado order by cidade
