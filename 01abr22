@@ -1,0 +1,69 @@
+--Comando Update | Delete | Insert
+
+--insert into <<tabela>> values (<<valor1>>,<<valor2>>,<<valorN>>)
+insert into cliente values ('Anderson Aluno', '(15)1234', null, '12346', 
+'edson@gmail.com','M', null, null, 'Sorocaba', 'SP')
+
+--insert into <<tabela>> (<<col1>>, <<colN>>) values (<<valor1>>,<<valorN>>)
+insert into Cliente (nome, email, cpf) values ('Carlos aluno', 
+'carlos@anhanguera.com', '456.258.753-80')
+
+--update <<tabela>> set 
+	--<<col1>> = <<valor1>>, 
+	--<<colN>> = <<valor2>>
+--<<condi��es>>
+update Cliente set bairro = 'Jardim das pedras'
+where cod_cliente = 12
+
+update cliente set cidade = 'Sorocaba'
+where cidade is null
+
+--delete from <<tabela>> <<condi��es>>
+delete
+from Cliente
+where email like '%gmail%'
+or email like '%hotmail%'
+
+delete
+from Pedido
+
+delete from Item_Pedido
+
+-------Conceitos e exemplos de View
+--Desejo uma lista com cod_cliente | NomeCliente | cod_pedido | totalPedido
+create view vw_total as
+select Cliente.cod_cliente, nome, Pedido.cod_pedido, 
+		sum(Item_Pedido.valor * Item_Pedido.quantidade) as totalPedido
+from Cliente, Pedido, Item_Pedido
+where Cliente.cod_cliente = Pedido.cod_cliente
+and Pedido.cod_pedido = Item_Pedido.cod_pedido
+group by Cliente.cod_cliente, nome, Pedido.cod_pedido
+
+--------------
+create view vw_pagamento as
+select vw.nome, totalPedido, cp.nome as formaPagto
+from vw_total vw, Pedido p, Condicao_Pagamento cp
+where vw.cod_pedido = p.cod_pedido
+and p.cod_condicao_pagto = cp.cod_condicao_pagto
+
+select * from vw_pagamento
+
+sp_helptext vw_pagamento
+
+create view vw_pagamento as  
+select vw.nome, totalPedido, cp.nome as formaPagto  
+from vw_total vw, Pedido p, Condicao_Pagamento cp  
+where vw.cod_pedido = p.cod_pedido  
+and p.cod_condicao_pagto = cp.cod_condicao_pagto
+
+sp_helptext vw_total
+
+create view vw_total as  
+select Cliente.cod_cliente, nome, Pedido.cod_pedido,   
+  sum(Item_Pedido.valor * Item_Pedido.quantidade) as totalPedido  
+from Cliente, Pedido, Item_Pedido  
+where Cliente.cod_cliente = Pedido.cod_cliente  
+and Pedido.cod_pedido = Item_Pedido.cod_pedido  
+group by Cliente.cod_cliente, nome, Pedido.cod_pedido
+
+--quero saber o nome do cliente, total do pedido, e a forma de pagamento
